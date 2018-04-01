@@ -1,0 +1,12 @@
+void enqueue(int i)
+{
+    if(rear==10)
+    {
+	
+        printf("More");}
+    rear++;
+    q[rear]=i;
+    if(front==-1)
+        front=0;
+
+}
