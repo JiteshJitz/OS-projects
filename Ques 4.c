@@ -1,118 +1,123 @@
-//Non preemptive shortest job next with priority
-#include<stdio.h> 
-int n,i,j,total_time=0;
-float avgtat=0,avgwt=0;
+#include<stdio.h>
 struct process
 {
-	int at,st,ct,tat,wt,priority;
-	char pname[20],tempc[20];
-	float ntat;
-
-}temp;
-void display(struct process a[]);
-void finding(struct process a[]);
-
- int main()
-{   
-    int time;
-	printf("Enter the no of process: \n");
-	scanf("%d",&n);
-	struct process  aa[n];
-	for(i=0;i<n;i++)
-	{
-		printf("Enter the name of Process name,Arrival_time,Burst_time:      \n");
-		scanf("%s",&aa[i].pname);
-		scanf("%d%d",&aa[i].at,&aa[i].st);
-	}
-			int f;
-			//assign priority
-		for(f=0;f<n;f++)
-		{
-			if(time>=aa[f].at && aa[f].st!=(-1)) 
-			{
-			aa[f].priority=1+((time-aa[f].at)/aa[f].st);
-}}
-//Sorting according to the priority
-	for(i=0;i<n;i++)
-	{
-		for(j=i;j>=1;j--)
-		{
-			if(aa[j].at<aa[j-1].at)
-			{
-			temp=aa[j-1];
-			aa[j-1]=aa[j];
-			aa[j]=temp;
-			}
-		}
-	}
-total_time+=aa[0].at+aa[0].st;
-for(i=1;i<n;i++)
-{
-if(aa[i].at>total_time)
-total_time=aa[i].at;
-total_time+=aa[i].st;
-}
-printf("%d\n",total_time);
-finding(aa);
-return 0;
-}
-void display(struct process a[])
-{
-for(i=0;i<n;i++)
-{
-a[i].tat=a[i].ct-a[i].at;
-a[i].wt=a[i].tat-a[i].st;
-a[i].ntat=(float)a[i].tat/a[i].st;
-}
-for(i=0;i<n;i++)
-{
-avgtat+=a[i].tat;
-avgwt+=a[i].wt;
-}
-avgtat=avgtat/n;
-avgwt=avgwt/n;
-printf("Process name\tArrival_Time\tBurst_Time\tCompletion_Time\tTurnaround_Time\tWaiting_Time\t\n");
-for(i=0;i<n;i++)
-{
-printf("%s\t\t%d\t\t%d\t\t\t%d\t\t%d\t%d\n",a[i].pname,a[i].at,a[i].st,a[i].ct,a[i].tat,a[i].wt);
-}
-printf("Average turnaround time=%f\nAverage waiting time=%f\n",avgtat,avgwt);
-}
-
-void finding(struct process  a[])
-{   
-
-    //To find the process which  has longer priority
-	int c_st=0,x, time=0,c;
 	
-	while(time<total_time)
-	{
-	c=0;
-	j=0;
-	for(i=0;i<n;i++)
-	{	if(a[i].at<=time)
-		{
-			j=i+1;
-		}
-	}
-	if(j>0)
-	{
-		int x=0,min_st=a[0].st;
-		for(i=1;i<j;i++)
-		{
-			if(min_st>a[i].st)
+	int pro,at,b_time,burst,p_arrived,complete;
+
+	double pri;
+	
+}proce[4];
+void Pri(struct process *p1,int t){	
+	if(t>=p1->at && p1->b_time!=(-1)) 
 			{
-				x=i;
-				min_st=a[i].st;
+				p1->pri=1+((t-p1->at)/p1->b_time);
+			}
+}
+void Sort(struct process *p1,struct process *p2){
+	if(p1->pri<p2->pri && p1->p_arrived!=0 && p2->p_arrived!=0)
+				{
+					double t1=p1->pri;
+					p1->pri=p2->pri;
+					p2->pri=t1;
+					int t2=p1->p_arrived;
+					p1->p_arrived=p2->p_arrived;
+					p2->p_arrived=t2;
+				}
+				else if(p1->pri==p2->pri  && p1->p_arrived!=0 && p2->p_arrived!=0)
+				{
+					if(p1->b_time<p2->b_time)
+					{
+						int t=p1->p_arrived;
+						p1->p_arrived=p2->p_arrived;
+						p2->p_arrived=t;
+					}
+				}
+			}
+
+void main(){
+	int time=0,i=0,bt=0,ii=0;
+	for(i=0;i<4;i++)
+	{
+		printf("\nENTER PROCESS ID:-");
+		scanf("%d",&proce[i].pro);
+		printf("\nENTER PROCESS ARRIVAL:-");
+		scanf("%d",&proce[i].at);
+		printf("\nENTER PROCESS BURST TIME:-");
+		scanf("%d",&proce[i].b_time);
+		proce[i].burst=proce[i].b_time;
+		proce[i].p_arrived=1;
+		proce[i].complete=0;
+		proce[i].pri=0;
+	}
+	while(1)
+	{
+		int te;
+		for(te=0;te<4;te++)
+		{
+			Pri(&proce[te],time);
+	
+		}
+		int p,q;
+		for(p=0;p<4;p++)
+		{
+			for(q=0;q<4-1-p;q++)
+			{
+				Sort(&proce[q],&proce[q+1]);
+			
 			}
 		}
-		time+=a[x].st;
-		a[x].ct=time;
-		a[x].st+=1000;
+		int y=proce[0].p_arrived;
+		bt=proce[y-1].b_time;
+		do
+		{
+		
+			int x;
+			for(x=0;x<4;x++)
+			{
+				if(time==proce[x].at)
+				{		
+					proce[x].p_arrived=x+1;
+					printf("process %dhas  arrived\n",x);
+				}	
+			}
+			bt=bt-1;
+			time=time+1;
+			if(bt==0)
+			{
+				printf("process %d has completed\n",y );
+				proce[y-1].complete=time;
+				ii=ii+1;
+				proce[y-1].b_time=-1;
+			
+				for(x=0;x<4;x++)
+				{
+					proce[x].pri=0;
+					if(proce[x].p_arrived!=0)
+					{
+						proce[x].p_arrived=x+1;
+					}
+				}
+				break;
+			}
+		}while(1);
+		if(ii==4)
+			break;
+
 	}
-	else
-		time++;
+	
+	int tat[4]={0}, wt[4]={0};float awt,atat;
+	for(i=0;i<4;i++)
+	{
+		tat[i]=proce[i].complete-proce[i].at;
+		wt[i]=tat[i]-proce[i].burst;
 	}
-	for(i=0;i<n;i++){a[i].st-=1000;}
-display(a);
+	printf("Process\tArrival time\tBurst time\tTurnaround time\tWaiting time\n");
+	for(i=0;i<4;i++)
+	{
+		printf("%d\t\t%d\t\t%d\t\t%d\t%d\n",i+1,proce[i].at,proce[i].burst,tat[i],wt[i]);
+	}
+	awt=wt[0]+wt[1]+wt[2]+wt[3];
+	atat=tat[0]+tat[1]+tat[2]+tat[3];
+	printf("\nAverage waiting time is %f .",awt/4.0);
+	printf("\nAverage turnaround time is %f .",atat/4.0);
 }
