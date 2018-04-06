@@ -1,0 +1,11 @@
+int dequeue()
+{
+    if(front==-1)
+        printf("underflow");
+    int t=queue[front];
+    if(front==rear)
+        front=rear=-1;
+    else
+        front++;
+    return t;
+}
