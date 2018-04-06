@@ -1,0 +1,12 @@
+//Question 4
+//Non preemptive shortest job next with priority
+#include<stdio.h> 
+int n,i,j,total_time=0;
+float avgtat=0,avgwt=0;
+struct process
+{
+	int at,st,ct,tat,wt,priority;
+	char pname[20],tempc[20];
+	float ntat;
+
+}temp;
