@@ -1,0 +1,57 @@
+#include<stdio.h> 
+int n,i,j,total_time=0;
+float avgtat=0,avgwt=0;
+struct process
+{
+	int at,st,ct,tat,wt,priority;
+	char pname[20],tempc[20];
+	float ntat;
+
+}temp;
+void display(struct process a[]);
+void finding(struct process a[]);
+
+ int main()
+{   
+    int time;
+	printf("Enter the no of process: \n");
+	scanf("%d",&n);
+	struct process  aa[n];
+	for(i=0;i<n;i++)
+	{
+		printf("Enter the name of Process name,Arrival_time,Burst_time:      \n");
+		scanf("%s",&aa[i].pname);
+		scanf("%d%d",&aa[i].at,&aa[i].st);
+	}
+			int f;
+			//assign priority
+		for(f=0;f<n;f++)
+		{
+			if(time>=aa[f].at && aa[f].st!=(-1)) 
+			{
+			aa[f].priority=1+((time-aa[f].at)/aa[f].st);
+}}
+//Sorting according to the priority
+	for(i=0;i<n;i++)
+	{
+		for(j=i;j>=1;j--)
+		{
+			if(aa[j].at<aa[j-1].at)
+			{
+			temp=aa[j-1];
+			aa[j-1]=aa[j];
+			aa[j]=temp;
+			}
+		}
+	}
+total_time+=aa[0].at+aa[0].st;
+for(i=1;i<n;i++)
+{
+if(aa[i].at>total_time)
+total_time=aa[i].at;
+total_time+=aa[i].st;
+}
+printf("%d\n",total_time);
+finding(aa);
+return 0;
+}
