@@ -1,0 +1,38 @@
+
+void finding(struct process  a[])
+{   
+
+    //To find the process which  has longer priority
+	int c_st=0,x, time=0,c;
+	
+	while(time<total_time)
+	{
+	c=0;
+	j=0;
+	for(i=0;i<n;i++)
+	{	if(a[i].at<=time)
+		{
+			j=i+1;
+		}
+	}
+	if(j>0)
+	{
+		int x=0,min_st=a[0].st;
+		for(i=1;i<j;i++)
+		{
+			if(min_st>a[i].st)
+			{
+				x=i;
+				min_st=a[i].st;
+			}
+		}
+		time+=a[x].st;
+		a[x].ct=time;
+		a[x].st+=1000;
+	}
+	else
+		time++;
+	}
+	for(i=0;i<n;i++){a[i].st-=1000;}
+display(a);
+}
