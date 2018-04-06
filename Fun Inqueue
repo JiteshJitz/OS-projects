@@ -1,0 +1,9 @@
+{
+    int k;
+    for(k=front;k<=rear;k++)
+    {
+        if(queue[k]==a)
+        return 1;
+    }
+    return 0;
+}
